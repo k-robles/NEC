@@ -123,10 +123,10 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FunFact.cs" />
-    <Compile Include="Models\ListFunFacts.cs" />
+    <Compile Include="BusinessLogic\ChuckNorrisFunFactsBL.cs" />
     <Compile Include="Models\FunFactsContext.cs" />
     <Compile Include="Models\IFunFact.cs" />
-    <Compile Include="Models\IFunFacts.cs" />
+    <Compile Include="BusinessLogic\IFunFactsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

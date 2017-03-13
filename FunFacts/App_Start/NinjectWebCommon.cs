@@ -61,7 +61,7 @@ namespace FunFacts.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<Models.IFunFacts>().To<Models.ListFunFacts>();
+            kernel.Bind<BusinessLogic.IFunFactsBL>().To<BusinessLogic.ChuckNorrisFunFactsBL>();
             kernel.Bind<Models.IFunFact>().To<Models.FunFact>();
         }        
     }

@@ -6,28 +6,39 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
+using FunFacts.Models;
 
-namespace FunFacts.Models
+namespace FunFacts.BusinessLogic
 {
-    public class ListFunFacts : IFunFacts
+    public class ChuckNorrisFunFactsBL : IFunFactsBL
     {
-        private FunFactsContext db = new FunFactsContext();
+        private FunFactsContext db;
 
-        public IEnumerable<IFunFact> GetTopN(int num)
+        public ChuckNorrisFunFactsBL()
+        {
+            db = new FunFactsContext("name=ChuckNorrisFF");
+        }
+
+        public ChuckNorrisFunFactsBL(FunFactsContext dbContext)
+        {
+            db = dbContext;
+        }
+
+        public IEnumerable<FunFact> GetTopN(int num)
         {
             var result = db.FunFacts.Take(num);
             return result;
         }
 
-        public async Task<IFunFact> GetRandom()
+        public async Task<FunFact> GetRandom()
         {
             var rnd = new Random();
-            IFunFact funFact = await(db.FunFacts.FindAsync(rnd.Next(1, db.FunFacts.Count())));
+            var funFact = await(db.FunFacts.FindAsync(rnd.Next(1, db.FunFacts.Count())));
             return funFact;
         }
 
-        public async Task<int> Update(int id, IFunFact ifunfact){
-            db.Entry(ifunfact).State = EntityState.Modified;
+        public async Task<int> Update(int id, FunFact funfact){
+            db.Entry(funfact).State = EntityState.Modified;
 
             try
             {
@@ -35,25 +46,24 @@ namespace FunFacts.Models
             }
             catch (DbUpdateConcurrencyException)
             {             
-                    throw;
-               
+                throw;              
             }
 
             return -1;
         }
 
-        public async Task Add(IFunFact funFact)
+        public async Task Add(FunFact funFact)
         {
-            db.FunFacts.Add((FunFact)funFact);
+            db.FunFacts.Add(funFact);
             await db.SaveChangesAsync();
         }
 
         public async Task<int> Delete(int id)
         {
-            IFunFact funFact = await db.FunFacts.FindAsync(id);
+            var funFact = await db.FunFacts.FindAsync(id);
             if (funFact != null)
             {
-                db.FunFacts.Remove((FunFact) funFact);
+                db.FunFacts.Remove(funFact);
                 await db.SaveChangesAsync();
             }
 
@@ -67,11 +77,8 @@ namespace FunFacts.Models
 
 
         public  void Dispose()
-        {
-            
-            db.Dispose();
-            
-            
+        {            
+            db.Dispose();            
         }
     }
 }

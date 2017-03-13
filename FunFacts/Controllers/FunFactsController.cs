@@ -10,44 +10,40 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FunFacts.Models;
+using FunFacts.BusinessLogic;
 
 namespace FunFacts.Controllers
 {
     public class FunFactsController : ApiController
     {
-        private IFunFacts funFacts;
+        private IFunFactsBL funFactsBL;
 
-        public FunFactsController()
+        public FunFactsController(IFunFactsBL funfacts)
         {
-            funFacts = new ListFunFacts();
-        }
-
-        public FunFactsController(IFunFacts funfacts)
-        {
-            funFacts = funfacts;
+            funFactsBL = funfacts;
         }
 
         // GET: api/FunFacts/10
         [Route("api/FunFacts/{num}")]
         public IEnumerable<FunFact> GetFunFactsTopN(int num)
         {
-            var result = funFacts.GetTopN(num).Select(f=>new FunFact() {id = f.id, description = f.description});
+            var result = funFactsBL.GetTopN(num).Select(f => new FunFact() { id = f.id, description = f.description });
             return result;
         }
 
         // GET: api/FunFacts/
         [Route("api/FunFact")]
-        [ResponseType(typeof(IFunFact))]
+        [ResponseType(typeof(FunFact))]
         public async Task<IHttpActionResult> GetFunFact()
         {
 
-            var funFact = await funFacts.GetRandom();
+            var funFact = await funFactsBL.GetRandom();
             if (funFact == null)
             {
                 return NotFound();
             }
 
-            return Ok(new FunFact() { id = funFact.id, description = funFact.description });
+            return Ok(funFact);
         }
 
         // PUT: api/FunFacts/5
@@ -66,11 +62,11 @@ namespace FunFacts.Controllers
 
             try
             {
-                await funFacts.Update(id, funFact);
+                await funFactsBL.Update(id, funFact);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FunFactExists(id))
+                if (!funFactsBL.Exists(id))
                 {
                     return NotFound();
                 }
@@ -92,7 +88,7 @@ namespace FunFacts.Controllers
                 return BadRequest(ModelState);
             }
 
-            await funFacts.Add(funFact);
+            await funFactsBL.Add(funFact);
 
             return Ok();
         }
@@ -101,7 +97,7 @@ namespace FunFacts.Controllers
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> DeleteFunFact(int id)
         {
-            await funFacts.Delete(id);
+            await funFactsBL.Delete(id);
 
             return Ok();
         }
@@ -110,14 +106,10 @@ namespace FunFacts.Controllers
         {
             if (disposing)
             {
-                funFacts.Dispose();
+                funFactsBL.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool FunFactExists(int id)
-        {
-            return funFacts.Exists(id);
-        }
     }
 }

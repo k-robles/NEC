@@ -15,11 +15,11 @@ namespace FunFacts.Models
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
     
-        public FunFactsContext() : base("name=FunFactsContext")
+        public FunFactsContext(string nameOrConnectionString) :  base(nameOrConnectionString)
         {
-
+            
         }
 
-        public System.Data.Entity.DbSet<FunFacts.Models.FunFact> FunFacts { get; set; }
+        public System.Data.Entity.DbSet<FunFact> FunFacts { get; set; }
     }
 }
