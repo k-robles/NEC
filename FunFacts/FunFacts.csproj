@@ -113,6 +113,7 @@
     <Compile Include="App_Start\NinjectWeb.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BusinessLogic\ChuckNorrisFunFactsBL.cs" />
     <Compile Include="Controllers\FunFactsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -123,7 +124,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FunFact.cs" />
-    <Compile Include="BusinessLogic\ChuckNorrisFunFactsBL.cs" />
+    <Compile Include="BusinessLogic\FunFactsBL.cs" />
     <Compile Include="Models\FunFactsContext.cs" />
     <Compile Include="Models\IFunFact.cs" />
     <Compile Include="BusinessLogic\IFunFactsBL.cs" />

@@ -16,9 +16,9 @@ namespace FunFacts.Controllers
 {
     public class FunFactsController : ApiController
     {
-        private IFunFactsBL funFactsBL;
+        private IFunFactsBL<FunFact> funFactsBL;
 
-        public FunFactsController(IFunFactsBL funfacts)
+        public FunFactsController(IFunFactsBL<FunFact> funfacts)
         {
             funFactsBL = funfacts;
         }

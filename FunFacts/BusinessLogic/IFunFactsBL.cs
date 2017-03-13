@@ -7,13 +7,18 @@ using FunFacts.Models;
 
 namespace FunFacts.BusinessLogic
 {
-    public interface IFunFactsBL : IDisposable
+
+    ///<summary>
+    ///A lightweight implementation of repository pattern
+    ///</summary>
+    
+    public interface IFunFactsBL<T> : IDisposable
     {
         
-        IEnumerable<FunFact> GetTopN(int num);
-         Task<FunFact> GetRandom();
-         Task<int> Update(int id, FunFact funFact);
-         Task Add(FunFact funFact);
+        IEnumerable<T> GetTopN(int num);
+         Task<T> GetRandom();
+         Task<int> Update(int id, T funFact);
+         Task Add(T funFact);
          Task<int> Delete(int id);
          bool Exists(int id);
     }

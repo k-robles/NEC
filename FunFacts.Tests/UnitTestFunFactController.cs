@@ -26,7 +26,7 @@ namespace FunFacts.Tests
             list.Add(new FunFact { id = 2, description = "2" });
             list.Add(new FunFact { id = 3, description = "3" });
 
-            var mockList = new Mock<IFunFactsBL>();
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
             mockList.Setup(x => x.GetTopN(2)).Returns(list.Take(2));
 
             var controller = new FunFacts.Controllers.FunFactsController(mockList.Object);
@@ -46,7 +46,7 @@ namespace FunFacts.Tests
 
             //Arrange
             var funfact = new FunFact() { id = 1, description = "1" };
-            var mockList = new Mock<IFunFactsBL>();
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
             mockList.Setup(x => x.GetRandom()).Returns(Task.FromResult(funfact));
 
             var controller = new FunFacts.Controllers.FunFactsController(mockList.Object);
@@ -68,7 +68,7 @@ namespace FunFacts.Tests
 
             //Arrange
             FunFact funfact = null;
-            var mockList = new Mock<IFunFactsBL>();
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
             mockList.Setup(x => x.GetRandom()).Returns(Task.FromResult(funfact));
 
             var controller = new FunFacts.Controllers.FunFactsController(mockList.Object);
@@ -87,7 +87,7 @@ namespace FunFacts.Tests
 
             //Arrange           
             var funfact = new FunFact() { id = 1, description = "funfact" };
-            var mockList = new Mock<IFunFactsBL>();
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
             mockList.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<FunFact>()))
                 .Returns(Task.FromResult(1));
 
@@ -107,7 +107,7 @@ namespace FunFacts.Tests
 
             //Arrange           
             var funfact = new FunFact() { id = 1, description = "funfact" };
-            var mockList = new Mock<IFunFactsBL>();
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
             mockList.Setup(x => x.Update(It.IsAny<int>(), It.IsAny<FunFact>()))
                 .Returns(Task.FromResult(1));
 
@@ -119,6 +119,25 @@ namespace FunFacts.Tests
             // Assert
             Assert.IsNotNull(actionResult);
             Assert.AreEqual(actionResult.Result.GetType(), typeof(StatusCodeResult));
+        }
+
+        [TestMethod]
+        public void CheckDeleteFunFactReturnOk()
+        {
+
+            //Arrange                      
+            var mockList = new Mock<IFunFactsBL<FunFact>>();
+            mockList.Setup(x => x.Delete(It.IsAny<int>()))
+                .Returns(Task.FromResult(1));
+
+            var controller = new FunFacts.Controllers.FunFactsController(mockList.Object);
+
+            //Act
+            var actionResult = controller.DeleteFunFact(2);
+
+            // Assert
+            Assert.IsNotNull(actionResult);
+            Assert.AreEqual(actionResult.Result.GetType(), typeof(OkResult));
         }
     }
 }

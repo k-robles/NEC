@@ -6,7 +6,7 @@ using System.Web;
 
 namespace FunFacts.Models
 {
-    public class FunFactsContext : DbContext
+    public class FunFactsContext<T> : DbContext where T: class, IFunFact
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -20,6 +20,6 @@ namespace FunFacts.Models
             
         }
 
-        public System.Data.Entity.DbSet<FunFact> FunFacts { get; set; }
+        public DbSet<T> FunFacts { get; set; }
     }
 }
